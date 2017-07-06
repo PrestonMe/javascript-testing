@@ -1,4 +1,4 @@
-import sum = from '../sum';
+import sum from '../sum';
 
 test('it works', () => {
   const result = sum(1, 2)

@@ -1,8 +1,5 @@
 export default sum
 
-function sum(a, b) {
-  if (a !== 3) {
-    return a
-  }
-  return a + b
+function sum(...numbers) {
+  return number.reduce((acc, n) => n + acc, 0)
 }

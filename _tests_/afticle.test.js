@@ -24,11 +24,36 @@ afterAll(done => {
   server.close(done)
 })
 
-test('can get articles with a limit', async () => {
-  const articles = await api
-    .get(`articles?limit=${limit}`)
-    .then(response => response.data.articles)
-  expect(articles).toHaveLength(limit)
+describe('unauthenticated', () => {
+  test('can get articles with a limit', async () => {
+    const articles = await api
+      .get(`articles?limit=${limit}`)
+      .then(response => response.data.articles)
+    expect(articles).toHaveLength(limit)
+  })
+})
+
+// we are splitting up the tests because the ones below
+// need an api client that is authenticated
+describe('authenticated', () => {
+  let cleanupUser
+  beforeAll(async () => {
+    const result = await createNewUser()
+    const token = result.user.token
+    // the below line says if there isn't an authroization header this will
+    // be the default
+    api.defaults.headers.common.authorization = `Token ${token}`
+    cleanupUser = result.cleanup
+  })
+
+  afterAll(async () => {
+    await cleanupUser()
+    api.defaults.headers.common.authorization = ''
+  })
+
+  test('works', () => {
+
+  })
 })
 
 // I'm going to give you this just so you don't have to look it up:
